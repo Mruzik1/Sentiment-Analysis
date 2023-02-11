@@ -1,2 +1,2 @@
 # Words-Embedding
-Words embedding from scratch for future "RNN from scratch" project
+I'm gonna train a word embedding model here made in Pytorch.
