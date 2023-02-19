@@ -12,26 +12,27 @@ class Tokenizer:
 
     def clean_text(self) -> str:
         text = str(self.__file.read()).lower()
+        text = re.sub(r'[’`]', '\'', text)
 
         text = self.__remove_links(text)
         text = self.__replace_chars(text)
         text = self.__remove_stop_words(text)
 
         text = re.sub(r' +', ' ', text)
-        text = re.sub(r' .{1,2} ', '', text)
-
+        text = re.sub(r' .{1,2} | \'.', '', text)
+        
         return text.strip()
 
-    def __remove_stop_words(self, text):
+    def __remove_stop_words(self, text: str) -> str:
         with open('data/stop_words.txt', 'r', encoding='utf-8') as fp:
             words = [word[:-1] for word in fp.readlines()]
             pattern = r"\b({})\b".format('|'.join(words))
-            return re.sub(pattern, '', text)
+        return re.sub(pattern, '', text)
 
     def __remove_links(self, text: str) -> str:
         pattern = r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)'
         return re.sub(pattern, ' ', text)
 
     def __replace_chars(self, text: str) -> str:
-        pattern = r'[^A-Za-z ]'
+        pattern = r'[^A-Za-z \']'
         return re.sub(pattern, ' ', text)
